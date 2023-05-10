@@ -266,13 +266,16 @@
                     btnContainer.classList.add("active");
                 paginationContainer.appendChild(btnContainer);
             }
-            
 
+            //always on section top when resize
+            window.addEventListener("resize", function(){
+                sectionMap.get(currentPage).scrollIntoView({block: "start"});
+            });
+            
             //Scroll listenener
             document.querySelector("body").addEventListener("wheel", function(event){
                 event.preventDefault();
-                var currentY = document.documentElement.scrollTop;
-                var isWheelDown = event .deltaY>0;
+                var isWheelDown = event.deltaY>0;
                 if(isWheelDown){
                     ++currentPage;
                     if(currentPage>sectionMap.size-1) {
@@ -300,27 +303,40 @@
             });
 
             //scroll trigger animation
-            const observer = new IntersectionObserver((e) => {
-            e.forEach(element => {
-                //on view
-                if(element.isIntersecting){
-                    element.target.style.opacity = '1';
-                    element.target.style.transform = 'translateY(0)';
-                    // element.target.style.transform = 'scale(1)';
-                } else {
-                    //off view
-                    element.target.style.opacity ='0';
-                    element.target.style.transform = 'translateY(100px)';
-                    // element.target.style.transform = 'scale(1.2)';
-                }
-            });   
-            }, { threshold : 0.9 });
+            const contentObserver = new IntersectionObserver((e) => {
+                e.forEach(element => {
+                    //on view
+                    if(element.isIntersecting){
+                        element.target.style.opacity = '1';
+                        element.target.style.transform = 'translateY(0)';
+                    } else {
+                        //off view
+                        element.target.style.opacity ='0';
+                        element.target.style.transform = 'translateY(100px)';
+                    }
+                });   
+            });
+            const imageObserver = new IntersectionObserver((e) => {
+                e.forEach(element => {
+                    //on view
+                    if(element.isIntersecting){
+                        element.target.style.opacity = '1';
+                        element.target.style.transform = 'translateX(0)';
+                    } else {
+                        //off view
+                        element.target.style.opacity ='0';
+                        element.target.style.transform = 'translateX(-100px)';
+                    }
+                });
+            });
             
             for(let i = 1; i < sectionArray.length; i++){
                 let content = sectionArray[i].querySelector('.content');
-                observer.observe(content);
+                let image = sectionArray[i].querySelector('img');
+                contentObserver.observe(content);
+                if(image)
+                    imageObserver.observe(image);
             }
-
         }, false);
 
         //선택된 pagination 제거
