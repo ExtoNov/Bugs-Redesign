@@ -169,7 +169,7 @@ ul.nav-menu {
 }
 #main-visual .main-logo {
     width: 750px;
-    filter: drop-shadow(0px 10px 10px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0px 10px 10px rgba(70, 70, 70, 0.25));
     user-select: none;
 }
 #main-visual .main-logo path {
@@ -180,7 +180,7 @@ ul.nav-menu {
     stroke-dashoffset: 500px;
     stroke-linecap: round;
     stroke-linejoin: round;
-    animation: draw-stroke 3s linear forwards;
+    animation: draw-stroke 2s linear forwards;
 }
 @keyframes draw-stroke {
     90% {
@@ -213,7 +213,7 @@ section h1 {
 #main-visual > .container > .wrap > div {
     display: grid;
     grid-template-rows: 0fr;
-    animation: openTitle 0.5s 3s forwards;
+    animation: openTitle 0.5s 2s forwards;
 }
 #main-visual h1 {
     overflow: hidden;
