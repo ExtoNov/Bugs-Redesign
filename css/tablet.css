@@ -25,7 +25,6 @@
     }
     #service,
     #invest,
-    #pr,
     #recruit,
     #address {
         height: auto;
@@ -33,7 +32,12 @@
         min-height: 100dvh;
     }
     #pr {
+        min-height: auto;
+        height: auto;
         overflow-x: hidden;
+    }
+    #pr .container {
+        min-height: auto;
     }
     #main-visual h1 {
         font-size: 40px;
@@ -45,6 +49,11 @@
     #address > .container > .content h1 {
         font-size: 32px;
         word-break: keep-all;
+    }
+    #service p,
+    #invest p,
+    #recruit p{
+        font-size: 26px;
     }
     
     @keyframes scroll-down {

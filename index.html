@@ -203,9 +203,11 @@
         let sectionMap = new Map(); // section 요소가 저장된 map
         let paginationBtnMap = new Map(); // Pagination 버튼이 저장된 map
         let isDesktop; //desktop 여부
+        let windowWidth; //window size check (for iphone, ipad)
         // Scroll function
         const sectionArray = document.querySelectorAll("section");//section 요소가 담긴 배열
         const paginationContainer = document.querySelector("#pagination");//pagination 컨테이너
+
 
         //항상 스크롤 최상단
         window.onbeforeunload = function () {
@@ -306,11 +308,12 @@
             isDesktop = window.matchMedia('(min-width: 1439px)').matches;
 
             //always on section top when resize
+            windowWidth = window.innerWidth;
             window.addEventListener("resize", function(){
                 // Desktop에만 적용
                 isDesktop = window.matchMedia('(min-width: 1439px)').matches;
-                console.log(isDesktop)
-                sectionMap.get(currentPage).scrollIntoView({block: "start"});
+                if(isDesktop && window.innerWidth != windowWidth)
+                    sectionMap.get(currentPage).scrollIntoView({block: "start"});
             });    
 
                
