@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="./css/reset.css" />
     <link rel="stylesheet" type="text/css" href="./css/swiper-bundle.min.css" />
     <link rel="stylesheet" type="text/css" href="./css/main.css" />
+    <link rel="stylesheet" type="text/css" href="./css/tablet.css" />
+    <link rel="stylesheet" type="text/css" href="./css/mobile.css" />
     <script src="./js/swiper-bundle.min.js"></script>
     <style>
         * {
@@ -27,6 +29,9 @@
                     <li><a href="#" class="nav-link" data-text="공고">공고</a></li>
                     <li><a href="#" class="nav-link" data-text="RECRUIT">RECRUIT</a></li>
                 </ul>
+                <a href="#" onclick="return false;" class="nav-mobile-menu">
+                    <img src="./images/menu.svg" alt="menu">
+                </a>
             </div>
         </nav>
     </header>
@@ -244,63 +249,70 @@
             // },
             });
             
+            // Desktop에만 적용
+            if (window.matchMedia('screen and (min-width: 1440px)').matches) {
+                //Section 태그 탐색후 pagination 구성
+                for(let index=0; index<sectionArray.length; ++index) {
+                    let section = sectionArray[index];
+                    //sectionMap 구성
+                    sectionMap.set(index, section);
 
-            //Section 태그 탐색후 pagination 구성
-            for(let index=0; index<sectionArray.length; ++index) {
-                let section = sectionArray[index];
-                //sectionMap 구성
-                sectionMap.set(index, section);
-
-                //pagination 구성
-                let btnContainer = document.createElement("a");
-                btnContainer.href = "javascript:void(0);";
-                btnContainer.addEventListener("click", function(){
-                    section.scrollIntoView({behavior: "smooth", block: "center"});
-                    currentPage=index;
-                    clearBtnActive();
-                    btnContainer.classList.add("active");
-                    changeLogo(currentPage);
+                    //pagination 구성
+                    let btnContainer = document.createElement("a");
+                    btnContainer.href = "javascript:void(0);";
+                    btnContainer.addEventListener("click", function(){
+                        section.scrollIntoView({behavior: "smooth", block: "center"});
+                        currentPage=index;
+                        clearBtnActive();
+                        btnContainer.classList.add("active");
+                        changeLogo(currentPage);
+                    });
+                    paginationBtnMap.set(index, btnContainer);
+                    if(index==0)
+                        btnContainer.classList.add("active");
+                    paginationContainer.appendChild(btnContainer);
+                }
+                 //always on section top when resize
+                 window.addEventListener("resize", function(){
+                    sectionMap.get(currentPage).scrollIntoView({block: "start"});
                 });
-                paginationBtnMap.set(index, btnContainer);
-                if(index==0)
-                    btnContainer.classList.add("active");
-                paginationContainer.appendChild(btnContainer);
+                //Scroll listenener
+                document.querySelector("body").addEventListener("wheel", function(event){
+                    event.preventDefault();
+                    var isWheelDown = event.deltaY>0;
+                    if(isWheelDown){
+                        ++currentPage;
+                        if(currentPage>sectionMap.size-1) {
+                            currentPage=sectionMap.size;
+                            document.querySelector("#footer").scrollIntoView({behavior: "smooth", block: "center"});
+                            return;
+                        }
+                    } else {
+                        if(currentPage>0)
+                            --currentPage;
+                        else
+                            return;
+                    }
+                    sectionMap.get(currentPage).scrollIntoView({behavior: "smooth", block: "center"});
+                    clearBtnActive();
+                    paginationBtnMap.get(currentPage).classList.add("active");
+                    changeLogo(currentPage);
+                }, {passive: false});
+                //Wheel Click Block 
+                document.querySelector("body").addEventListener("mousedown", function(event){
+                    //1:좌, 2:휠, 3:우
+                    if(event.which==2)
+                        event.preventDefault();
+                });
             }
 
-            //always on section top when resize
-            window.addEventListener("resize", function(){
-                sectionMap.get(currentPage).scrollIntoView({block: "start"});
-            });
+                
+
+               
             
-            //Scroll listenener
-            document.querySelector("body").addEventListener("wheel", function(event){
-                event.preventDefault();
-                var isWheelDown = event.deltaY>0;
-                if(isWheelDown){
-                    ++currentPage;
-                    if(currentPage>sectionMap.size-1) {
-                        currentPage=sectionMap.size;
-                        document.querySelector("#footer").scrollIntoView({behavior: "smooth", block: "center"});
-                        return;
-                    }
-                } else {
-                    if(currentPage>0)
-                        --currentPage;
-                    else
-                        return;
-                }
-                sectionMap.get(currentPage).scrollIntoView({behavior: "smooth", block: "center"});
-                clearBtnActive();
-                paginationBtnMap.get(currentPage).classList.add("active");
-                changeLogo(currentPage);
-            }, {passive: false});
             
-            //Wheel Click Block 
-            document.querySelector("body").addEventListener("mousedown", function(event){
-                //1:좌, 2:휠, 3:우
-                if(event.which==2)
-                    event.preventDefault();
-            });
+            
+            
 
             //scroll trigger animation
             const contentObserver = new IntersectionObserver((e) => {
