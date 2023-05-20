@@ -444,7 +444,7 @@ a.card-container .card-content p {
     overflow: hidden;
     word-break: keep-all;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 

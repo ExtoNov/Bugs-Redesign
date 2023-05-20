@@ -202,6 +202,7 @@
         let currentPage; //현재 보고 있는 페이지
         let sectionMap = new Map(); // section 요소가 저장된 map
         let paginationBtnMap = new Map(); // Pagination 버튼이 저장된 map
+        let isDesktop; //desktop 여부
         // Scroll function
         const sectionArray = document.querySelectorAll("section");//section 요소가 담긴 배열
         const paginationContainer = document.querySelector("#pagination");//pagination 컨테이너
@@ -249,64 +250,68 @@
             // },
             });
             
-            // Desktop에만 적용
-            if (window.matchMedia('screen and (min-width: 1440px)').matches) {
-                //Section 태그 탐색후 pagination 구성
-                for(let index=0; index<sectionArray.length; ++index) {
-                    let section = sectionArray[index];
-                    //sectionMap 구성
-                    sectionMap.set(index, section);
+            //Section 태그 탐색후 pagination 구성
+            for(let index=0; index<sectionArray.length; ++index) {
+                let section = sectionArray[index];
+                //sectionMap 구성
+                sectionMap.set(index, section);
 
-                    //pagination 구성
-                    let btnContainer = document.createElement("a");
-                    btnContainer.href = "javascript:void(0);";
-                    btnContainer.addEventListener("click", function(){
-                        section.scrollIntoView({behavior: "smooth", block: "center"});
-                        currentPage=index;
-                        clearBtnActive();
-                        btnContainer.classList.add("active");
-                        changeLogo(currentPage);
-                    });
-                    paginationBtnMap.set(index, btnContainer);
-                    if(index==0)
-                        btnContainer.classList.add("active");
-                    paginationContainer.appendChild(btnContainer);
-                }
-                 //always on section top when resize
-                 window.addEventListener("resize", function(){
-                    sectionMap.get(currentPage).scrollIntoView({block: "start"});
-                });
-                //Scroll listenener
-                document.querySelector("body").addEventListener("wheel", function(event){
-                    event.preventDefault();
-                    var isWheelDown = event.deltaY>0;
-                    if(isWheelDown){
-                        ++currentPage;
-                        if(currentPage>sectionMap.size-1) {
-                            currentPage=sectionMap.size;
-                            document.querySelector("#footer").scrollIntoView({behavior: "smooth", block: "center"});
-                            return;
-                        }
-                    } else {
-                        if(currentPage>0)
-                            --currentPage;
-                        else
-                            return;
-                    }
-                    sectionMap.get(currentPage).scrollIntoView({behavior: "smooth", block: "center"});
+                //pagination 구성
+                let btnContainer = document.createElement("a");
+                btnContainer.href = "javascript:void(0);";
+                btnContainer.addEventListener("click", function(){
+                    section.scrollIntoView({behavior: "smooth", block: "center"});
+                    currentPage=index;
                     clearBtnActive();
-                    paginationBtnMap.get(currentPage).classList.add("active");
+                    btnContainer.classList.add("active");
                     changeLogo(currentPage);
-                }, {passive: false});
-                //Wheel Click Block 
-                document.querySelector("body").addEventListener("mousedown", function(event){
-                    //1:좌, 2:휠, 3:우
-                    if(event.which==2)
-                        event.preventDefault();
                 });
+                paginationBtnMap.set(index, btnContainer);
+                if(index==0)
+                    btnContainer.classList.add("active");
+                paginationContainer.appendChild(btnContainer);
             }
+            //wheel event
+            document.querySelector("body").addEventListener("wheel", function(event){
+                if(!isDesktop)
+                    return;
+                event.preventDefault();
+                let isWheelDown = event.deltaY>0;
+                if(isWheelDown){
+                    ++currentPage;
+                    if(currentPage>sectionMap.size-1) {
+                        currentPage=sectionMap.size;
+                        document.querySelector("#footer").scrollIntoView({behavior: "smooth", block: "center"});
+                        return;
+                    }
+                } else {
+                    if(currentPage>0)
+                        --currentPage;
+                    else
+                        return;
+                }
+                sectionMap.get(currentPage).scrollIntoView({behavior: "smooth", block: "center"});
+                clearBtnActive();
+                paginationBtnMap.get(currentPage).classList.add("active");
+                changeLogo(currentPage);
+            }, {passive: false});
+            //Wheel Click Block 
+            document.querySelector("body").addEventListener("mousedown", function(event){
+                //1:좌, 2:휠, 3:우
+                if(event.which==2)
+                    event.preventDefault();
+            });
+            
+            //window size check
+            isDesktop = window.matchMedia('(min-width: 1439px)').matches;
 
-                
+            //always on section top when resize
+            window.addEventListener("resize", function(){
+                // Desktop에만 적용
+                isDesktop = window.matchMedia('(min-width: 1439px)').matches;
+                console.log(isDesktop)
+                sectionMap.get(currentPage).scrollIntoView({block: "start"});
+            });    
 
                
             

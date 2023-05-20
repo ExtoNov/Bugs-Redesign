@@ -19,27 +19,40 @@
     }
     #service,
     #invest,
-    #pr,
     #recruit,
     #address {
         height: auto;
+        min-height: 100vh;
+        min-height: 100dvh;
     }
     #pr {
+        min-height: auto;
+        height: auto;
         overflow-x: hidden;
+    }
+    #pr .container {
+        min-height: auto;
+    }
+    #pr > .container > .content {
+        margin-bottom: 0;
     }
     #pagination {
         display: none;
     }
     #service h1,
     #invest h1,
-    #pr h1,
     #recruit > .container h1,
     #address > .container > .content h1 {
         font-size: 26px;
+        margin-bottom: 30px;
         word-break: keep-all;
     }
     #pr h1 {
+        font-size: 45px;
         line-height: 1;
+    }
+    a.card-container .card-content p {
+        font-size: 13px;
     }
     #service p,
     #invest p,
@@ -54,6 +67,9 @@
     #service .circle {
         width: 200px;
         height: 200px;
+    }
+    #service > .container {
+        flex-direction: column-reverse;
     }
     #service .circle img,
     #invest > .container > img,
@@ -74,19 +90,23 @@
         flex-direction: column;
         padding: 50px 0;
         box-sizing: border-box;
-        gap: 5vh;
+        justify-content: center;
+        min-height: 100dvh;
+        gap: 10vh;
+        gap: 10dvh;
+    }
+    #service > .container,
+    #invest > .container {
+        justify-content: center;
     }
     a.card-container {
-        width: 250px;
+        width: 200px;
     }
     a.card-container .card-image {
-        height: 250px;
+        height: 200px;
     }
     .marquee {
         font-size: 48px;
-    }
-    .link-button {
-        transform: scale(0.75);
     }
     #footer > .container > .content > ul > li:first-child::after,
     .footer-link a::after {
@@ -100,9 +120,20 @@
     }
     .footer-link span {
         display: block;
-        margin: 10px 0 15px;
+        margin: 20px 0 15px;
     }
     #footer > .container > div {
         height: auto;
+    }
+
+    @keyframes scroll-down {
+        0% {
+            bottom: 70px;
+            opacity: 1;
+        }
+        100% {
+            bottom: 20px;
+            opacity: 0;
+        }
     }
 }
