@@ -23,7 +23,7 @@
     #address {
         height: auto;
         min-height: 100vh;
-        min-height: 100dvh;
+        min-height: 100lvh;
     }
     #pr {
         min-height: auto;
@@ -91,9 +91,9 @@
         padding: 50px 0;
         box-sizing: border-box;
         justify-content: center;
-        min-height: 100dvh;
+        min-height: 100lvh;
         gap: 10vh;
-        gap: 10dvh;
+        gap: 10lvh;
     }
     #service > .container,
     #invest > .container {
