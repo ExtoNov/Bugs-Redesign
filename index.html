@@ -273,6 +273,7 @@
                     btnContainer.classList.add("active");
                 paginationContainer.appendChild(btnContainer);
             }
+            
             //wheel event
             document.querySelector("body").addEventListener("wheel", function(event){
                 if(!isDesktop)
@@ -296,6 +297,7 @@
                 clearBtnActive();
                 paginationBtnMap.get(currentPage).classList.add("active");
                 changeLogo(currentPage);
+
             }, {passive: false});
             //Wheel Click Block 
             document.querySelector("body").addEventListener("mousedown", function(event){
@@ -357,6 +359,28 @@
                 if(image)
                     imageObserver.observe(image);
             }
+
+            if(!isDesktop){
+                //pr offset setting
+                let prSectionOffset = sectionMap.get(3).getBoundingClientRect();
+                console.log(prSectionOffset)
+                let navLinks = document.querySelectorAll('nav .nav-link');
+                let logo = document.querySelector("h1.logo");
+                window.onscroll = function(){
+                    if(window.scrollY > prSectionOffset.top && window.scrollY < prSectionOffset.bottom){
+                        logo.classList.add("color");
+                        navLinks.forEach(function(navLink) {
+                            navLink.style.color = "var(--dark)";
+                        });
+                    } else {
+                        logo.classList.remove("color");
+                        navLinks.forEach(function(navLink) {
+                            navLink.style.color = "var(--white)";
+                        });
+                    }
+                        
+                }
+            }
         }, false);
 
         //선택된 pagination 제거
@@ -368,10 +392,19 @@
         //header logo 색상 변경
         let changeLogo = function(currentPage){
             let logo = document.querySelector("h1.logo");
-            if(currentPage==3)
+            let navLinks = document.querySelectorAll('nav .nav-link');
+            if(currentPage==3){
                 logo.classList.add("color");
-            else if(logo.classList.contains("color"))//이미 색상 로고면
+                navLinks.forEach(function(navLink) {
+                    navLink.style.color = "var(--dark)";
+                });
+            } else if(logo.classList.contains("color")){//이미 색상 로고면
                 logo.classList.remove("color");
+                navLinks.forEach(function(navLink) {
+                    navLink.style.color = "var(--white)";
+                });
+            }
+            
         };
     </script>
     <script src="./js/main.js"></script>
